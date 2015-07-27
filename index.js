@@ -25,12 +25,18 @@ module.exports = function webhook (route, callback) {
 
     function processWebhook (name) {
       var accepted = [
+        'checkin.created',
         'ticket.created',
+        'ticket.completed',
         'ticket.updated',
-        'ticket.voided',
         'ticket.unsnoozed',
-        'ticket.reassigned'
-      ]
+        'ticket.voided',
+        'registration.started',
+        'registration.filling',
+        'registration.updated',
+        'registration.finished',
+        'registration.completed'
+      ];
       if (~accepted.indexOf(name)) jsonBody(req, res, handlePost)
       else handleError(makeError('Unknown webhook name: ' + name, 400))
     }
