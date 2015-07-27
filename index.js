@@ -11,6 +11,7 @@ module.exports = function webhook (route, callback) {
     }
 
     function handleError (err) {
+      console.log("Oh no, an error! " + err.toString());
       res.setHeader('Content-Type', 'text/plain; charset=utf-8')
       res.statusCode = err.statusCode
       res.end(err.stack || err.toString())
@@ -46,12 +47,14 @@ module.exports = function webhook (route, callback) {
       return
     }
 
+    console.log("Request method: " + req.method);
     if (req.method !== 'POST') {
       res.writeHead(req.method === 'OPTIONS' ? 200 : 405, {'Allow': 'OPTIONS, POST'})
       res.end()
       return
     }
 
+    console.log("Request headers: " + req.headers);
     if (req.headers['x-webhook-name']) processWebhook(req.headers['x-webhook-name'])
     else handleError(makeError('Missing header', 400))
   }
